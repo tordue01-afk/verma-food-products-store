@@ -1,60 +1,267 @@
 "use strict";
 
+const BUSINESS_NAME = "Verma Logistics Services";
+const BUSINESS_OWNER = "Regina Mbaveren Ande";
+const BUSINESS_WHATSAPP = "2347062206682";
+const BUSINESS_LOCATION = "Adamawa State, Nigeria";
 
-const BUSINESS_NAME =
-    "Verma Logistics Services";
+const header = document.getElementById("header");
+const navbar = document.getElementById("navbar");
+const menuButton = document.getElementById("menuButton");
+const navLinks = document.querySelectorAll(".nav-link");
+const pageSections = document.querySelectorAll("main section[id]");
+const revealElements = document.querySelectorAll(".reveal");
+const productButtons = document.querySelectorAll(
+    ".product-order-button"
+);
+const galleryButtons = document.querySelectorAll(
+    ".gallery-order-button"
+);
+const orderForm = document.getElementById("orderForm");
+const orderProduct = document.getElementById("orderProduct");
+const orderStatus = document.getElementById("orderStatus");
+const currentYear = document.getElementById("currentYear");
 
-const BUSINESS_OWNER =
-    "Regina Mbaveren Ande";
 
-const BUSINESS_WHATSAPP =
-    "2347062206682";
-
-const BUSINESS_LOCATION =
-    "Adamawa State, Nigeria";
-
-
-const header =
-    document.getElementById("header");
-
-const navbar =
-    document.getElementById("navbar");
-
-const menuButton =
-    document.getElementById("menuButton");
-
-const navLinks =
-    document.querySelectorAll(".nav-link");
-
-const pageSections =
-    document.querySelectorAll("main section[id]");
-
-const revealElements =
-    document.querySelectorAll(".reveal");
-
-const productButtons =
-    document.querySelectorAll(".product-order-button");
-
-const galleryButtons =
-    document.querySelectorAll(".gallery-order-button");
-
-const orderForm =
-    document.getElementById("orderForm");
-
-const orderProduct =
-    document.getElementById("orderProduct");
-
-const orderStatus =
-    document.getElementById("orderStatus");
-
-const currentYear =
-    document.getElementById("currentYear");
-
+/* Current Year */
 
 if (currentYear) {
-    currentYear.textContent =
-        new Date().getFullYear();
+    currentYear.textContent = new Date().getFullYear();
 }
+
+
+/* Image Placeholder */
+
+function escapeSvgText(text) {
+    return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&apos;");
+}
+
+
+function divideLabelIntoLines(label) {
+    const words = label.trim().split(/\s+/);
+
+    if (words.length <= 2) {
+        return [label, ""];
+    }
+
+    const middle = Math.ceil(words.length / 2);
+
+    return [
+        words.slice(0, middle).join(" "),
+        words.slice(middle).join(" ")
+    ];
+}
+
+
+function createImagePlaceholder(label) {
+    const safeLabel =
+        label.toLowerCase().includes("logo")
+            ? "Verma Logistics"
+            : label;
+
+    const [firstLine, secondLine] =
+        divideLabelIntoLines(safeLabel);
+
+    const svg = `
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="900"
+            height="650"
+            viewBox="0 0 900 650"
+        >
+            <defs>
+                <linearGradient
+                    id="background"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1"
+                >
+                    <stop
+                        offset="0%"
+                        stop-color="#034d28"
+                    />
+
+                    <stop
+                        offset="55%"
+                        stop-color="#08783f"
+                    />
+
+                    <stop
+                        offset="100%"
+                        stop-color="#d62828"
+                    />
+                </linearGradient>
+
+                <filter id="shadow">
+                    <feDropShadow
+                        dx="0"
+                        dy="12"
+                        stdDeviation="16"
+                        flood-opacity="0.22"
+                    />
+                </filter>
+            </defs>
+
+            <rect
+                width="900"
+                height="650"
+                fill="url(#background)"
+            />
+
+            <circle
+                cx="760"
+                cy="100"
+                r="180"
+                fill="#ffffff"
+                opacity="0.07"
+            />
+
+            <circle
+                cx="100"
+                cy="570"
+                r="220"
+                fill="#ffffff"
+                opacity="0.06"
+            />
+
+            <rect
+                x="170"
+                y="145"
+                width="560"
+                height="360"
+                rx="45"
+                fill="#ffffff"
+                opacity="0.96"
+                filter="url(#shadow)"
+            />
+
+            <circle
+                cx="450"
+                cy="260"
+                r="62"
+                fill="#eaf7ef"
+            />
+
+            <path
+                d="
+                    M420 280
+                    C420 230 455 195 505 198
+                    C500 248 470 280 420 280
+                    Z
+                "
+                fill="#08783f"
+            />
+
+            <path
+                d="
+                    M430 276
+                    C450 250 470 230 493 210
+                "
+                fill="none"
+                stroke="#d62828"
+                stroke-width="10"
+                stroke-linecap="round"
+            />
+
+            <text
+                x="450"
+                y="375"
+                text-anchor="middle"
+                font-family="Arial, Helvetica, sans-serif"
+                font-size="42"
+                font-weight="700"
+                fill="#17251d"
+            >
+                ${escapeSvgText(firstLine)}
+            </text>
+
+            ${
+                secondLine
+                    ? `
+                        <text
+                            x="450"
+                            y="430"
+                            text-anchor="middle"
+                            font-family="Arial, Helvetica, sans-serif"
+                            font-size="42"
+                            font-weight="700"
+                            fill="#17251d"
+                        >
+                            ${escapeSvgText(secondLine)}
+                        </text>
+                    `
+                    : ""
+            }
+
+            <text
+                x="450"
+                y="475"
+                text-anchor="middle"
+                font-family="Arial, Helvetica, sans-serif"
+                font-size="22"
+                font-weight="600"
+                fill="#08783f"
+            >
+                Verma Logistics Services
+            </text>
+        </svg>
+    `;
+
+    return (
+        "data:image/svg+xml;charset=UTF-8," +
+        encodeURIComponent(svg)
+    );
+}
+
+
+function displayImagePlaceholder(image) {
+    if (!image) {
+        return;
+    }
+
+    if (image.dataset.placeholderActive === "true") {
+        return;
+    }
+
+    image.dataset.placeholderActive = "true";
+
+    const label =
+        image.getAttribute("alt") ||
+        "Verma Food Product";
+
+    image.src = createImagePlaceholder(label);
+}
+
+
+function prepareImageFallback(image) {
+    if (!image) {
+        return;
+    }
+
+    image.addEventListener("error", function () {
+        displayImagePlaceholder(image);
+    });
+
+    if (
+        image.complete &&
+        image.naturalWidth === 0
+    ) {
+        displayImagePlaceholder(image);
+    }
+}
+
+
+document.querySelectorAll("img").forEach(
+    function (image) {
+        prepareImageFallback(image);
+    }
+);
 
 
 /* Header */
@@ -71,10 +278,7 @@ function updateHeader() {
 }
 
 
-window.addEventListener(
-    "scroll",
-    updateHeader
-);
+window.addEventListener("scroll", updateHeader);
 
 updateHeader();
 
@@ -131,9 +335,10 @@ if (menuButton) {
     menuButton.addEventListener(
         "click",
         function () {
-            if (
-                navbar.classList.contains("open")
-            ) {
+            const menuIsOpen =
+                navbar.classList.contains("open");
+
+            if (menuIsOpen) {
                 closeMenu();
             } else {
                 openMenu();
@@ -143,14 +348,12 @@ if (menuButton) {
 }
 
 
-navLinks.forEach(
-    function (link) {
-        link.addEventListener(
-            "click",
-            closeMenu
-        );
-    }
-);
+navLinks.forEach(function (link) {
+    link.addEventListener(
+        "click",
+        closeMenu
+    );
+});
 
 
 document.addEventListener(
@@ -160,16 +363,16 @@ document.addEventListener(
             return;
         }
 
-        const clickedNavbar =
+        const clickedInsideNavbar =
             navbar.contains(event.target);
 
-        const clickedButton =
+        const clickedMenuButton =
             menuButton.contains(event.target);
 
         if (
             navbar.classList.contains("open") &&
-            !clickedNavbar &&
-            !clickedButton
+            !clickedInsideNavbar &&
+            !clickedMenuButton
         ) {
             closeMenu();
         }
@@ -198,7 +401,8 @@ function updateActiveLink() {
                 section.offsetTop - 160;
 
             const sectionBottom =
-                sectionTop + section.offsetHeight;
+                sectionTop +
+                section.offsetHeight;
 
             if (
                 window.scrollY >= sectionTop &&
@@ -210,18 +414,16 @@ function updateActiveLink() {
         }
     );
 
-    navLinks.forEach(
-        function (link) {
-            link.classList.remove("active");
+    navLinks.forEach(function (link) {
+        link.classList.remove("active");
 
-            if (
-                link.getAttribute("href") ===
-                `#${activeSection}`
-            ) {
-                link.classList.add("active");
-            }
+        if (
+            link.getAttribute("href") ===
+            `#${activeSection}`
+        ) {
+            link.classList.add("active");
         }
-    );
+    });
 }
 
 
@@ -236,13 +438,14 @@ updateActiveLink();
 /* Reveal Animation */
 
 if ("IntersectionObserver" in window) {
-
     const revealObserver =
         new IntersectionObserver(
             function (entries, observer) {
                 entries.forEach(
                     function (entry) {
-                        if (entry.isIntersecting) {
+                        if (
+                            entry.isIntersecting
+                        ) {
                             entry.target.classList.add(
                                 "visible"
                             );
@@ -264,19 +467,16 @@ if ("IntersectionObserver" in window) {
             revealObserver.observe(element);
         }
     );
-
 } else {
-
     revealElements.forEach(
         function (element) {
             element.classList.add("visible");
         }
     );
-
 }
 
 
-/* Select Product */
+/* Product Selection */
 
 function moveToOrderForm(productName) {
     if (!orderProduct) {
@@ -317,32 +517,32 @@ productButtons.forEach(
 );
 
 
-/* Random Gallery */
+/* Product Gallery */
 
 const products = [
     {
         name: "Melon Seed",
-        image: "images/melon-seed.jpg"
+        image: "./images/melon-seed.jpg"
     },
     {
         name: "Ogbono",
-        image: "images/ogbono.jpg"
+        image: "./images/ogbono.jpg"
     },
     {
         name: "Groundnut Oil",
-        image: "images/groundnut-oil.jpg"
+        image: "./images/groundnut-oil.jpg"
     },
     {
         name: "Red Palm Oil",
-        image: "images/palm-oil.jpg"
+        image: "./images/palm-oil.jpg"
     },
     {
         name: "Honey",
-        image: "images/honey.jpg"
+        image: "./images/honey.jpg"
     },
     {
         name: "Dried Pepper",
-        image: "images/dried-pepper.jpg"
+        image: "./images/dried-pepper.jpg"
     }
 ];
 
@@ -369,10 +569,13 @@ let displayedProducts = [
 
 
 function shuffleProducts(productList) {
-    const shuffled = [...productList];
+    const shuffledProducts = [
+        ...productList
+    ];
 
     for (
-        let index = shuffled.length - 1;
+        let index =
+            shuffledProducts.length - 1;
         index > 0;
         index -= 1
     ) {
@@ -383,21 +586,22 @@ function shuffleProducts(productList) {
             );
 
         [
-            shuffled[index],
-            shuffled[randomIndex]
+            shuffledProducts[index],
+            shuffledProducts[randomIndex]
         ] = [
-            shuffled[randomIndex],
-            shuffled[index]
+            shuffledProducts[randomIndex],
+            shuffledProducts[index]
         ];
     }
 
-    return shuffled;
+    return shuffledProducts;
 }
 
 
 function updateGallery() {
     displayedProducts =
-        shuffleProducts(products).slice(0, 3);
+        shuffleProducts(products)
+            .slice(0, 3);
 
     galleryImages.forEach(
         function (image, index) {
@@ -415,9 +619,14 @@ function updateGallery() {
 
             window.setTimeout(
                 function () {
-                    image.src = product.image;
+                    image.dataset.placeholderActive =
+                        "false";
+
                     image.alt = product.name;
-                    title.textContent = product.name;
+                    image.src = product.image;
+
+                    title.textContent =
+                        product.name;
 
                     image.classList.remove(
                         "changing"
@@ -437,14 +646,17 @@ galleryButtons.forEach(
             function () {
                 const index =
                     Number(
-                        button.dataset.galleryIndex
+                        button.dataset
+                            .galleryIndex
                     );
 
                 const product =
                     displayedProducts[index];
 
                 if (product) {
-                    moveToOrderForm(product.name);
+                    moveToOrderForm(
+                        product.name
+                    );
                 }
             }
         );
@@ -483,10 +695,7 @@ function clearFieldError(field) {
 }
 
 
-function showFieldError(
-    field,
-    message
-) {
+function showFieldError(field, message) {
     if (!field) {
         return;
     }
@@ -653,18 +862,22 @@ if (orderForm) {
         function (event) {
             event.preventDefault();
 
-            orderStatus.className =
-                "form-status";
+            if (orderStatus) {
+                orderStatus.className =
+                    "form-status";
 
-            orderStatus.textContent = "";
+                orderStatus.textContent = "";
+            }
 
             if (!validateOrderForm()) {
-                orderStatus.classList.add(
-                    "error"
-                );
+                if (orderStatus) {
+                    orderStatus.classList.add(
+                        "error"
+                    );
 
-                orderStatus.textContent =
-                    "Please complete the highlighted fields.";
+                    orderStatus.textContent =
+                        "Please complete the highlighted fields.";
+                }
 
                 return;
             }
@@ -754,12 +967,14 @@ Please confirm availability, price and delivery arrangement.
                 )}`;
 
 
-            orderStatus.classList.add(
-                "success"
-            );
+            if (orderStatus) {
+                orderStatus.classList.add(
+                    "success"
+                );
 
-            orderStatus.textContent =
-                "Your order is ready. WhatsApp is opening.";
+                orderStatus.textContent =
+                    "Your order is ready. WhatsApp is opening.";
+            }
 
 
             window.open(
@@ -776,6 +991,7 @@ Please confirm availability, price and delivery arrangement.
             "input, select, textarea"
         );
 
+
     formFields.forEach(
         function (field) {
             field.addEventListener(
@@ -783,22 +999,29 @@ Please confirm availability, price and delivery arrangement.
                 function () {
                     clearFieldError(field);
 
-                    orderStatus.className =
-                        "form-status";
+                    if (orderStatus) {
+                        orderStatus.className =
+                            "form-status";
 
-                    orderStatus.textContent = "";
+                        orderStatus.textContent =
+                            "";
+                    }
                 }
             );
+
 
             field.addEventListener(
                 "change",
                 function () {
                     clearFieldError(field);
 
-                    orderStatus.className =
-                        "form-status";
+                    if (orderStatus) {
+                        orderStatus.className =
+                            "form-status";
 
-                    orderStatus.textContent = "";
+                        orderStatus.textContent =
+                            "";
+                    }
                 }
             );
         }
